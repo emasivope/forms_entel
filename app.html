@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            display: block;
+            width: 80%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Cliente</h2>
+        <form id="clienteForm">
+            <input type="text" id="name" placeholder="Nombre" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="submit">Registrar</button>
+        </form>
+        <p id="mensaje"></p>
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://hsqvwyjhzbsqhbbknmfk.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzcXZ3eWpoemJzcWhiYmtubWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0Mzc4NjgsImV4cCI6MjA1OTAxMzg2OH0.PVQJ2MQmJMAL26_zf95rYmSldtHxh_SXPHwfPFFynWY";
+        
+        async function registrarCliente(event) {
+            event.preventDefault();
+            const nombre = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/form_one`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": `Bearer ${SUPABASE_KEY}`
+                },
+                body: JSON.stringify({
+                    name: nombre,  
+                    email: email
+                })
+            });
+
+            if (response.ok) {
+                document.getElementById("mensaje").innerText = "Cliente registrado con éxito!";
+            } else {
+                document.getElementById("mensaje").innerText = "Error al registrar cliente.";
+            }
+        }
+        
+        document.getElementById("clienteForm").addEventListener("submit", registrarCliente);
+    </script>
+</body>
+</html>
